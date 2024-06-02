@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  app:
+    image: gymnase-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - TYPEORM_CONNECTION=postgres
+      - TYPEORM_HOST=db
+      - TYPEORM_PORT=5432 # Mise à jour du port pour correspondre au port par défaut de PostgreSQL
+      - TYPEORM_USERNAME=ousmane
+      - TYPEORM_PASSWORD=password
+      - TYPEORM_DATABASE=gymnase
+      - TYPEORM_SYNCHRONIZE=true
+      - TYPEORM_LOGGING=true
+      - JWT_SECRET=your_jwt_secret # Ajout de JWT_SECRET à partir de .env
+    env_file:
+      - ./.env
+    volumes:
+      - .:/gymnase-api
+    ports:
+      - 5000:5000
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=ousmane
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=gymnase
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5436:5432" # Mise à jour du port pour correspondre à celui de PostgreSQL
+
+volumes:
+  db_data:
