@@ -8,11 +8,7 @@ RUN apk add --update --no-cache git nodejs yarn build-base tzdata postgresql-dev
 
 COPY . $app
 
-RUN npm install -g npm@10.8.1
-
-RUN npm install -g nodemon
-
-RUN npm install
+RUN npm install -g npm@10.8.1 nodemon && npm install
 
 EXPOSE 5000
 
